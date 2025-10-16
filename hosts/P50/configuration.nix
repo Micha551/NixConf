@@ -135,6 +135,8 @@
     lshw
     python3
     unzip
+    pavucontrol
+    brightnessctl
 
 
     # niri
