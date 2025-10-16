@@ -126,6 +126,7 @@
     python3
     unzip
     rocmPackages.rocm-smi
+    pavucontrol
 
 
     # niri
