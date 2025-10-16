@@ -135,6 +135,7 @@
     lshw
     python3
     unzip
+    pavucontrol
 
 
     # niri
