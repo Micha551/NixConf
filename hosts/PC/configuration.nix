@@ -13,8 +13,11 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.kernelParams = [
+    "video=HDMI-A-1:1920x1080@144.001"
+  ];
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = "PC"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -42,6 +45,14 @@
     LC_TIME = "de_DE.UTF-8";
   };
 
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
+
+  
+
+
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
@@ -52,7 +63,6 @@
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "de";
-    variant = "mac_nodeadkeys";
   };
 
   # Configure console keymap
@@ -86,7 +96,7 @@
     description = "Michael Grinschewski";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
-    #  thunderbird
+    #  thunderbirdmako
     ];
   };
 
@@ -99,10 +109,41 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    # general stuff
+    vim
     wget
+    neovim
+    git
+    fastfetch
+    btop
+    lua
+    gcc
+    clang
+    spotify
+    obsidian
+    nerd-fonts.hack
+    lshw
+    python3
+    unzip
+    rocmPackages.rocm-smi
+
+
+    # niri
+    niri
+    gnome-keyring
+    xdg-desktop-portal-gtk
+    xdg-desktop-portal-gnome
+    fuzzel
+    xwayland-satellite
+    alacritty
+    waybar
+    swaybg
   ];
 
+  programs.niri = {
+      enable = true;
+      package = pkgs.niri;
+  };
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -129,5 +170,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "25.05"; # Did you read the comment?
-
 }
