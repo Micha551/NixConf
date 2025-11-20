@@ -51,8 +51,8 @@
   services.xserver.enable = true;
 
   # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  services.displayManager.sddm.enable = true;
+  services.desktopManager.plasma6.enable = true;
 
   services.xserver.videoDrivers = ["nvidia"];
 
@@ -69,6 +69,8 @@
 
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
+  
+  hardware.bluetooth.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -99,19 +101,37 @@
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
+  services.logind.lidSwitchExternalPower = "ignore";
+
+  services.tailscale.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.migio = {
     isNormalUser = true;
     description = "Michael Grinschewski";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "dialout"];
+    shell = pkgs.fish;
     packages = with pkgs; [
-    #  thunderbirdmako
+    discord
+    arduino
+    thunderbird
+    moonlight-qt
+    paraview
+    fish
     ];
   };
 
+  programs = {
+    steam = {
+      enable = true;
+      remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+      dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+      localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
+    };
+    firefox.enable = true;
+  };
+
   # Install firefox.
-  programs.firefox.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -137,6 +157,14 @@
     unzip
     pavucontrol
     brightnessctl
+    ghostty
+    blueman
+    libgcc
+
+    # LSP
+    clang-tools
+    lua-language-server
+    stylua
 
 
     # niri
@@ -151,10 +179,21 @@
     swaybg
   ];
 
+  programs.nix-ld.enable = true;
+
+  programs.nix-ld.libraries = with pkgs; [
+    # Add any missing dynamic libraries for unpackaged programs
+    # here, NOT in environment.systemPackages
+    proj
+
+  ];
+
   programs.niri = {
       enable = true;
       package = pkgs.niri;
   };
+
+  programs.fish.enable = true;
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -181,5 +220,5 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "25.05"; # Did you read the comment?
-
 }
+
