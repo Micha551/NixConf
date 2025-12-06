@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, pkgs-old, ... }:
 
 {
   imports =
@@ -108,7 +108,7 @@
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
-  services.logind.lidSwitchExternalPower = "ignore";
+  services.logind.settings.Login.HandleLidSwitchExternalPower = "ignore";
 
   services.tailscale.enable = true;
 
@@ -118,14 +118,17 @@
     description = "Michael Grinschewski";
     extraGroups = [ "networkmanager" "wheel" "dialout"];
     shell = pkgs.fish;
-    packages = with pkgs; [
-    discord
-    arduino
-    thunderbird
-    moonlight-qt
-    paraview
-    fish
-    ];
+    packages = (with pkgs; [
+      discord
+      arduino
+      thunderbird
+      moonlight-qt
+      fish
+    ])
+    ++
+    (with pkgs-old; [
+      paraview
+    ]);
   };
 
   programs = {
@@ -182,9 +185,10 @@
     xdg-desktop-portal-gnome
     fuzzel
     xwayland-satellite
-    alacritty
-    waybar
-    swaybg
+   # alacritty
+   # waybar
+   # swaybg
+    foot
   ];
 
   programs.nix-ld.enable = true;
