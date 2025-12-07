@@ -2,115 +2,98 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, pkgs-old, ... }:
+{ config, pkgs, pkgs-unstable, ... }:
 
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ../../modules/greetd.nix
     ];
 
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  networking.hostName = "P50"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  # Nix settings
+  nixpkgs.config.allowUnfree = true;
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Enable networking
-  networking.networkmanager.enable = true;
-
-  # Set your time zone.
-  time.timeZone = "Europe/Berlin";
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "de_DE.UTF-8";
-    LC_IDENTIFICATION = "de_DE.UTF-8";
-    LC_MEASUREMENT = "de_DE.UTF-8";
-    LC_MONETARY = "de_DE.UTF-8";
-    LC_NAME = "de_DE.UTF-8";
-    LC_NUMERIC = "de_DE.UTF-8";
-    LC_PAPER = "de_DE.UTF-8";
-    LC_TELEPHONE = "de_DE.UTF-8";
-    LC_TIME = "de_DE.UTF-8";
+  nix = {
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
+    optimise = {
+      automatic = true;
+      dates = [ "weekly" ];
+    };
+    settings.experimental-features = [ "nix-command" "flakes" ];
   };
 
-  hardware.graphics = {
-    enable = true;
-  };
-
-
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
-  # Enable the GNOME Desktop Environment.
-
-  services.desktopManager.plasma6.enable = true;
-
-  environment.plasma6.excludePackages = with pkgs.kdePackages; [
-    plasma-browser-integration
-    konsole
-    elisa
-  ];
-
-  services.xserver.videoDrivers = ["nvidia"];
-
-  hardware.nvidia = {
-    modesetting.enable = true;
-
-    powerManagement.enable = false;
-
-    powerManagement.finegrained = false;
-
-    open = false;
-
-    nvidiaSettings = true;
-
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
-  };
   
-  hardware.bluetooth.enable = true;
-
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "de";
+  # Bootloader.
+  boot.loader = {
+    systemd-boot.enable = true;
+    efi.canTouchEfiVariables = true;
   };
 
-  # Configure console keymap
+  # Networking
+  networking = {
+    hostName = "P50"; # Define your hostname.
+    networkmanager.enable = true;
+  };
+
+  # Timezone & Locale
+  time.timeZone = "Europe/Berlin";
+  i18n = {
+    defaultLocale = "en_US.UTF-8";
+    extraLocaleSettings = {
+      LC_ADDRESS = "de_DE.UTF-8";
+      LC_IDENTIFICATION = "de_DE.UTF-8";
+      LC_MEASUREMENT = "de_DE.UTF-8";
+      LC_MONETARY = "de_DE.UTF-8";
+      LC_NAME = "de_DE.UTF-8";
+      LC_NUMERIC = "de_DE.UTF-8";
+      LC_PAPER = "de_DE.UTF-8";
+      LC_TELEPHONE = "de_DE.UTF-8";
+      LC_TIME = "de_DE.UTF-8";
+    };
+  };
+
+  # Hardware settings
+  hardware = {
+    graphics.enable = true;
+    bluetooth.enable = true;
+    nvidia = {
+      open = false;
+      nvidiaSettings = true;
+      package = config.boot.kernelPackages.nvidiaPackages.stable;
+    };
+  };
+
+  # Services
+  services = {
+    xserver = {
+      xkb = {
+        layout = "de";
+      };
+      enable = true;
+      videoDrivers = ["nvidia"];
+    };
+
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+    };
+
+    desktopManager.plasma6.enable = true;
+    printing.enable = true;
+    pulseaudio.enable = false;
+    logind.settings.Login.HandleLidSwitchExternalPower = "ignore";
+    tailscale.enable = true;
+  };
+
   console.keyMap = "de";
 
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-
-  # Enable sound with pipewire.
-  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
-  };
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
-  services.logind.settings.Login.HandleLidSwitchExternalPower = "ignore";
-
-  services.tailscale.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.migio = {
@@ -119,17 +102,72 @@
     extraGroups = [ "networkmanager" "wheel" "dialout"];
     shell = pkgs.fish;
     packages = (with pkgs; [
+    ]);
+  };
+  # Allow unfree packages
+
+
+  environment = {
+    systemPackages = (with pkgs; [
+      # general stuff
+      vim
+      wget
+      neovim
+      git
+      fastfetch
+      btop
+      lua
+      gcc
+      clang
+      spotify
+      obsidian
+      nerd-fonts.hack
+      lshw
+      python3
+      unzip
+      pavucontrol
+      brightnessctl
+      ghostty
+      blueman
+      libgcc
+      paraview
+
+      # LSP
+      clang-tools
+      lua-language-server
+      stylua
+      nixd
+
+      # niri
+      niri
+      gnome-keyring
+      xdg-desktop-portal-gtk
+      xdg-desktop-portal-gnome
+      fuzzel
+      xwayland-satellite
+      foot
+      libsForQt5.qt5ct
+      wezterm
       discord
-      arduino
       thunderbird
       moonlight-qt
       fish
     ])
     ++
-    (with pkgs-old; [
-      paraview
+    (with pkgs-unstable; [
     ]);
+    plasma6.excludePackages = with pkgs.kdePackages; [
+      plasma-browser-integration
+      konsole
+      elisa
+    ];
+    variables = {
+      QT_QPA_PLATFORMTHEME="qt5ct"; 
+    };
   };
+
+  qt.enable = true;
+  qt.platformTheme = "qt5ct";
 
   programs = {
     steam = {
@@ -138,109 +176,19 @@
       dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
       localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
     };
-    firefox.enable = true;
-    fish.enable = true;
-  };
-
-  # Install firefox.
-
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    # general stuff
-    vim
-    wget
-    neovim
-    git
-    fastfetch
-    btop
-    lua
-    gcc
-    clang
-    spotify
-    obsidian
-    nerd-fonts.hack
-    lshw
-    python3
-    unzip
-    pavucontrol
-    brightnessctl
-    ghostty
-    blueman
-    libgcc
-
-    # LSP
-    clang-tools
-    lua-language-server
-    stylua
-
-
-    # niri
-    niri
-    gnome-keyring
-    xdg-desktop-portal-gtk
-    xdg-desktop-portal-gnome
-    fuzzel
-    xwayland-satellite
-   # alacritty
-   # waybar
-   # swaybg
-    foot
-  ];
-
-  programs.nix-ld.enable = true;
-
-  programs.nix-ld.libraries = with pkgs; [
-    # Add any missing dynamic libraries for unpackaged programs
-    # here, NOT in environment.systemPackages
-    proj
-
-  ];
-
-  programs.niri = {
+    niri = {
       enable = true;
       package = pkgs.niri;
+    };
+    firefox.enable = true;
+    fish.enable = true;
+    nix-ld = {
+      enable = true;
+      libraries = with pkgs; [
+      ];
+    };
   };
 
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 30d";
-  };
-
-  nix.optimise = {
-    automatic = true;
-    dates = [ "weekly" ];
-  };
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
-
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "25.05"; # Did you read the comment?
 }
 
