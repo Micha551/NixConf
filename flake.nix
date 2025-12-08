@@ -38,14 +38,18 @@
             inherit pkgs-unstable;
           };
         };
-        PC = nixpkgs.lib.nixosSystem {
+        PC = lib.nixosSystem {
           inherit system;
           modules = [
             ./hosts/PC/configuration.nix
+            ./modules/quickshell.nix
+            ./modules/greetd.nix
           ];
           specialArgs = {
+            inherit inputs;
             inherit username;
             inherit name;
+            inherit pkgs-unstable;
           };
         };
       };

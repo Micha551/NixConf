@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, pkgs-unstable, ... }:
 
 {
   imports =
@@ -10,39 +10,50 @@
       ./hardware-configuration.nix
     ];
 
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.kernelParams = [
-    "video=HDMI-A-1:1920x1080@144.001"
-  ];
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  networking.hostName = "PC"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  # Nix settings
+  nixpkgs.config.allowUnfree = true;
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+  nix = {
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
+    optimise = {
+      automatic = true;
+      dates = [ "weekly" ];
+    };
+    settings.experimental-features = [ "nix-command" "flakes" ];
+  };
 
-  # Enable networking
-  networking.networkmanager.enable = true;
+  # Bootloader
+  boot.loader = {
+    systemd-boot.enable = true;
+    efi.canTouchEfiVariables = true;
+    kernelParams = [ "video=HDMI-A-1:1920x1080@144.001" ];
+  };
 
-  # Set your time zone.
+  # Networking
+  networking = {
+    hostName = "MiGiPC"; # Define your hostname.
+    networkmanager.enable = true;
+  };
+
+  # Timezone & Locale
   time.timeZone = "Europe/Berlin";
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "de_DE.UTF-8";
-    LC_IDENTIFICATION = "de_DE.UTF-8";
-    LC_MEASUREMENT = "de_DE.UTF-8";
-    LC_MONETARY = "de_DE.UTF-8";
-    LC_NAME = "de_DE.UTF-8";
-    LC_NUMERIC = "de_DE.UTF-8";
-    LC_PAPER = "de_DE.UTF-8";
-    LC_TELEPHONE = "de_DE.UTF-8";
-    LC_TIME = "de_DE.UTF-8";
+  i18n = {
+    defaultLocale = "en_US.UTF-8";
+    extraLocaleSettings = {
+      LC_ADDRESS = "de_DE.UTF-8";
+      LC_IDENTIFICATION = "de_DE.UTF-8";
+      LC_MEASUREMENT = "de_DE.UTF-8";
+      LC_MONETARY = "de_DE.UTF-8";
+      LC_NAME = "de_DE.UTF-8";
+      LC_NUMERIC = "de_DE.UTF-8";
+      LC_PAPER = "de_DE.UTF-8";
+      LC_TELEPHONE = "de_DE.UTF-8";
+      LC_TIME = "de_DE.UTF-8";
+    };
   };
 
   hardware.graphics = {
@@ -50,15 +61,8 @@
     enable32Bit = true;
   };
 
-  
-
-
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-
-  # Enable the Plasma Desktop Environment.
-  services.displayManager.sddm.enable = true;
-  services.desktopManager.plasma6.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -68,39 +72,98 @@
   # Configure console keymap
   console.keyMap = "de";
 
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
+  # Services
+  services = {
+    xserver = {
+      xkb = {
+        layout = "de";
+      };
+      enable = true;
+    };
 
-  # Enable sound with pipewire.
-  services.pulseaudio.enable = false;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+    };
 
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
+    printing.enable = true;
+    pulseaudio.enable = false;
+    logind.settings.Login.HandleLidSwitchExternalPower = "ignore";
+    tailscale.enable = true;
   };
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
+  console.keyMap = "de";
+
+  security.rtkit.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.migio = {
     isNormalUser = true;
     description = "Michael Grinschewski";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-      thunderbird
+    extraGroups = [ "networkmanager" "wheel" "dialout"];
+    shell = pkgs.fish;
+    packages = (with pkgs; [
+    ]);
+  };
+  # Allow unfree packages
+
+
+  environment = {
+    systemPackages = (with pkgs; [
+      # general stuff
+      vim
+      wget
+      neovim
+      git
+      fastfetch
+      btop
+      lua
+      gcc
+      clang
+      spotify
+      obsidian
+      nerd-fonts.hack
+      lshw
+      python3
+      unzip
+      pavucontrol
+      brightnessctl
+      ghostty
+      libgcc
+      paraview
+      wezterm
       discord
-    ];
+      thunderbird
+      moonlight-qt
+      fish
+
+      # LSP
+      clang-tools
+      lua-language-server
+      stylua
+      nixd
+
+      # niri
+      niri
+      gnome-keyring
+      xdg-desktop-portal-gtk
+      xdg-desktop-portal-gnome
+      fuzzel
+      xwayland-satellite
+      libsForQt5.qt5ct
+    ])
+    ++
+    (with pkgs-unstable; [
+    ]);
+    variables = {
+      QT_QPA_PLATFORMTHEME="qt5ct"; 
+    };
   };
 
+  qt.enable = true;
+  qt.platformTheme = "qt5ct";
 
   programs = {
     steam = {
@@ -109,76 +172,17 @@
       dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
       localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
     };
-    firefox.enable = true;
-  };
-
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    # general stuff
-    vim
-    wget
-    neovim
-    git
-    fastfetch
-    btop
-    lua
-    gcc
-    clang
-    spotify
-    obsidian
-    nerd-fonts.hack
-    lshw
-    python3
-    unzip
-    rocmPackages.rocm-smi
-    pavucontrol
-    ghostty
-
-
-    # niri
-    niri
-    gnome-keyring
-    xdg-desktop-portal-gtk
-    xdg-desktop-portal-gnome
-    fuzzel
-    xwayland-satellite
-    alacritty
-    waybar
-    swaybg
-  ];
-
-  programs.niri = {
+    niri = {
       enable = true;
       package = pkgs.niri;
+    };
+    firefox.enable = true;
+    fish.enable = true;
+    nix-ld = {
+      enable = true;
+      libraries = with pkgs; [
+      ];
+    };
   };
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
-
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "25.05"; # Did you read the comment?
+  system.stateVersion = "25.11"; # Did you read the comment?
 }

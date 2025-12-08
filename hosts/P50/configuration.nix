@@ -84,7 +84,6 @@
       pulse.enable = true;
     };
 
-    desktopManager.plasma6.enable = true;
     printing.enable = true;
     pulseaudio.enable = false;
     logind.settings.Login.HandleLidSwitchExternalPower = "ignore";
@@ -104,7 +103,6 @@
     packages = (with pkgs; [
     ]);
   };
-  # Allow unfree packages
 
 
   environment = {
@@ -131,6 +129,11 @@
       blueman
       libgcc
       paraview
+      wezterm
+      discord
+      thunderbird
+      moonlight-qt
+      fish
 
       # LSP
       clang-tools
@@ -145,22 +148,11 @@
       xdg-desktop-portal-gnome
       fuzzel
       xwayland-satellite
-      foot
       libsForQt5.qt5ct
-      wezterm
-      discord
-      thunderbird
-      moonlight-qt
-      fish
     ])
     ++
     (with pkgs-unstable; [
     ]);
-    plasma6.excludePackages = with pkgs.kdePackages; [
-      plasma-browser-integration
-      konsole
-      elisa
-    ];
     variables = {
       QT_QPA_PLATFORMTHEME="qt5ct"; 
     };
