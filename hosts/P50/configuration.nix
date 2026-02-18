@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, pkgs-unstable, ... }:
+{ config, pkgs, pkgs-old, ... }:
 
 {
   imports =
@@ -37,6 +37,10 @@
   networking = {
     hostName = "P50"; # Define your hostname.
     networkmanager.enable = true;
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [ 25565 ];
+    };
   };
 
   # Timezone & Locale
@@ -59,7 +63,9 @@
   # Hardware settings
   hardware = {
     graphics.enable = true;
-    bluetooth.enable = true;
+    bluetooth = {
+      enable = true;
+    };
     nvidia = {
       open = false;
       nvidiaSettings = true;
@@ -84,11 +90,43 @@
       pulse.enable = true;
     };
 
-    printing.enable = true;
+    udev.extraRules = ''
+
+    # 2.4GHz/Dongle
+    KERNEL=="hidraw*", ATTRS{idVendor}=="2dc8", MODE="0666"
+
+    # Bluetooth
+    KERNEL=="hidraw*", KERNELS=="*2DC8:*", MODE="0666"
+    '';
+
+    avahi = {
+      enable = true;
+      nssmdns4 = true;
+      openFirewall = true;
+    };
+
+    printing = {
+      enable = true;
+      drivers = with pkgs; [
+        cups-filters
+        cups-browsed
+      ];
+    };
+
+    desktopManager.plasma6.enable = true;
+    displayManager.sddm.enable = true;
     pulseaudio.enable = false;
     logind.settings.Login.HandleLidSwitchExternalPower = "ignore";
     tailscale.enable = true;
+    blueman.enable = true;
   };
+
+  /*
+  # Virtualization
+  virtualisation.libvirtd.enable = true;
+  programs.virt-manager.enable = true;
+  virtualisation.libvirtd.qemu.swtpm.enable = true;
+  */
 
   console.keyMap = "de";
 
@@ -98,7 +136,7 @@
   users.users.migio = {
     isNormalUser = true;
     description = "Michael Grinschewski";
-    extraGroups = [ "networkmanager" "wheel" "dialout"];
+    extraGroups = [ "networkmanager" "wheel" "dialout" "lp"];
     shell = pkgs.fish;
     packages = (with pkgs; [
     ]);
@@ -126,7 +164,6 @@
       pavucontrol
       brightnessctl
       ghostty
-      blueman
       libgcc
       paraview
       wezterm
@@ -134,6 +171,11 @@
       thunderbird
       moonlight-qt
       fish
+      vlc
+
+      # TeX
+      texliveFull
+      latexrun
 
       # LSP
       clang-tools
@@ -143,23 +185,29 @@
 
       # niri
       niri
-      gnome-keyring
-      xdg-desktop-portal-gtk
-      xdg-desktop-portal-gnome
       fuzzel
       xwayland-satellite
-      libsForQt5.qt5ct
     ])
     ++
-    (with pkgs-unstable; [
+    (with pkgs-old; [
     ]);
-    variables = {
-      QT_QPA_PLATFORMTHEME="qt5ct"; 
-    };
-  };
 
-  qt.enable = true;
-  qt.platformTheme = "qt5ct";
+    # Set environment variables
+    variables = {
+    };
+
+    # Exclude unneeded plasma pkgs
+    plasma6.excludePackages = with pkgs; [
+      kdePackages.elisa # Simple music player aiming to provide a nice experience for its users
+      kdePackages.kdepim-runtime # Akonadi agents and resources
+      kdePackages.kmahjongg # KMahjongg is a tile matching game for one or two players
+      kdePackages.kmines # KMines is the classic Minesweeper game
+      kdePackages.konversation # User-friendly and fully-featured IRC client
+      kdePackages.kpat # KPatience offers a selection of solitaire card games
+      kdePackages.ksudoku # KSudoku is a logic-based symbol placement puzzle
+      kdePackages.konsole
+    ];
+  };
 
   programs = {
     steam = {

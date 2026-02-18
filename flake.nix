@@ -17,8 +17,8 @@
     let
       system = "x86_64-linux";
       lib = nixpkgs.lib;
-      pkgs = nixpkgs.legacyPackages.${system};
-      pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
+      pkgs-old = nixpkgs.legacyPackages.${system};
+      pkgs = nixpkgs-unstable.legacyPackages.${system};
       username = "migio";
       name = "Michael Grinschewski";
     in {
@@ -29,13 +29,11 @@
           ./hosts/P50/configuration.nix
           nixos-hardware.nixosModules.lenovo-thinkpad-p50
           ./modules/quickshell.nix
-          ./modules/greetd.nix
           ];
           specialArgs = {
             inherit inputs;
             inherit username;
             inherit name;
-            inherit pkgs-unstable;
           };
         };
         PC = lib.nixosSystem {
@@ -43,13 +41,11 @@
           modules = [
             ./hosts/PC/configuration.nix
             ./modules/quickshell.nix
-            ./modules/greetd.nix
           ];
           specialArgs = {
             inherit inputs;
             inherit username;
             inherit name;
-            inherit pkgs-unstable;
           };
         };
       };
