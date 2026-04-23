@@ -28,10 +28,17 @@
 
   # Bootloader
   boot.loader = {
-    systemd-boot.enable = true;
-    efi.canTouchEfiVariables = true;
-    kernelParams = [ "video=HDMI-A-1:1920x1080@144.001" ];
+    efi = {
+        canTouchEfiVariables = true;
+    };
+    grub = {
+        enable = true;
+        efiSupport = true;
+        #efiInstallAsRemovable = true;
+        device = "nodev";
+    };
   };
+  boot.kernelParams = [ "video=HDMI-A-1:1920x1080@144.001" ];
 
   # Networking
   networking = {
@@ -61,17 +68,6 @@
     enable32Bit = true;
   };
 
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "de";
-  };
-
-  # Configure console keymap
-  console.keyMap = "de";
-
   # Services
   services = {
     xserver = {
@@ -88,9 +84,19 @@
       pulse.enable = true;
     };
 
+    udev.extraRules = ''
+
+    # 2.4GHz/Dongle
+    KERNEL=="hidraw*", ATTRS{idVendor}=="2dc8", MODE="0666"
+
+    # Bluetooth
+    KERNEL=="hidraw*", KERNELS=="*2DC8:*", MODE="0666"
+    '';
+
+    desktopManager.plasma6.enable = true;
+    displayManager.sddm.enable = true;
     printing.enable = true;
     pulseaudio.enable = false;
-    logind.settings.Login.HandleLidSwitchExternalPower = "ignore";
     tailscale.enable = true;
   };
 
@@ -102,7 +108,7 @@
   users.users.migio = {
     isNormalUser = true;
     description = "Michael Grinschewski";
-    extraGroups = [ "networkmanager" "wheel" "dialout"];
+    extraGroups = [ "networkmanager" "wheel" "dialout" "lp"];
     shell = pkgs.fish;
     packages = (with pkgs; [
     ]);
@@ -134,36 +140,56 @@
       libgcc
       paraview
       wezterm
-      discord
+      vesktop
       thunderbird
       moonlight-qt
       fish
+      vlc
+      octaveFull
+      libreoffice
+      signal-desktop
+      anki
+      blender
+      vscode
+      rocmPackages.rocm-smi
+
+      # TeX
+      texliveFull
+      latexrun
 
       # LSP
       clang-tools
       lua-language-server
       stylua
       nixd
+      ripgrep
 
       # niri
       niri
-      gnome-keyring
-      xdg-desktop-portal-gtk
-      xdg-desktop-portal-gnome
       fuzzel
       xwayland-satellite
-      libsForQt5.qt5ct
+      playerctl
     ])
     ++
     (with pkgs-unstable; [
     ]);
-    variables = {
-      QT_QPA_PLATFORMTHEME="qt5ct"; 
-    };
-  };
 
-  qt.enable = true;
-  qt.platformTheme = "qt5ct";
+    # Set environment variables
+    variables = {
+    };
+
+    # Exclude unneeded plasma pkgs
+    plasma6.excludePackages = with pkgs; [
+      kdePackages.elisa # Simple music player aiming to provide a nice experience for its users
+      kdePackages.kdepim-runtime # Akonadi agents and resources
+      kdePackages.kmahjongg # KMahjongg is a tile matching game for one or two players
+      kdePackages.kmines # KMines is the classic Minesweeper game
+      kdePackages.konversation # User-friendly and fully-featured IRC client
+      kdePackages.kpat # KPatience offers a selection of solitaire card games
+      kdePackages.ksudoku # KSudoku is a logic-based symbol placement puzzle
+      kdePackages.konsole
+    ];
+  };
 
   programs = {
     steam = {
