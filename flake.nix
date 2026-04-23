@@ -12,29 +12,27 @@
   };
 
   outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, nixos-hardware, ... }:
-    # use "nixos", or your hostname as the name of the configuration
-    # it's a better practice than "default" shown in the video
     let
       system = "x86_64-linux";
       lib = nixpkgs.lib;
-      pkgs-old = nixpkgs.legacyPackages.${system};
-      pkgs = nixpkgs-unstable.legacyPackages.${system};
+      pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
+      pkgs = nixpkgs.legacyPackages.${system};
       username = "migio";
       name = "Michael Grinschewski";
     in {
       nixosConfigurations = {
         P50 = lib.nixosSystem {
           inherit system;
-          modules = [
-          ./hosts/P50/configuration.nix
-          nixos-hardware.nixosModules.lenovo-thinkpad-p50
-          ./modules/quickshell.nix
-          ];
           specialArgs = {
             inherit inputs;
             inherit username;
             inherit name;
           };
+          modules = [
+          ./hosts/P50/configuration.nix
+          nixos-hardware.nixosModules.lenovo-thinkpad-p50
+          ./modules/quickshell.nix
+          ];
         };
         PC = lib.nixosSystem {
           inherit system;

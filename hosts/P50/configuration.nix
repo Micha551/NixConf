@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, pkgs-old, ... }:
+{ config, pkgs, pkgs-unstable, ... }:
 
 {
   imports =
@@ -46,7 +46,7 @@
   # Timezone & Locale
   time.timeZone = "Europe/Berlin";
   i18n = {
-    defaultLocale = "en_US.UTF-8";
+    defaultLocale = "en_GB.UTF-8";
     extraLocaleSettings = {
       LC_ADDRESS = "de_DE.UTF-8";
       LC_IDENTIFICATION = "de_DE.UTF-8";
@@ -70,6 +70,8 @@
       open = false;
       nvidiaSettings = true;
       package = config.boot.kernelPackages.nvidiaPackages.stable;
+      prime.offload.enable = false;
+      prime.sync.enable = true;
     };
   };
 
@@ -129,8 +131,10 @@
   */
 
   console.keyMap = "de";
-
-  security.rtkit.enable = true;
+  security = {
+    rtkit.enable = true;
+    sudo.package = pkgs.sudo.override { withInsults = true; };
+  };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.migio = {
@@ -144,6 +148,7 @@
 
 
   environment = {
+    # TODO: Sort by Use Case
     systemPackages = (with pkgs; [
       # general stuff
       vim
@@ -168,10 +173,18 @@
       paraview
       wezterm
       discord
+      vesktop
       thunderbird
       moonlight-qt
       fish
       vlc
+      octaveFull
+      libreoffice
+      signal-desktop
+      anki
+      ani-cli
+      blender
+      vscode
 
       # TeX
       texliveFull
@@ -182,14 +195,16 @@
       lua-language-server
       stylua
       nixd
+      ripgrep
 
-      # niri
+      # Niri
       niri
       fuzzel
       xwayland-satellite
+      playerctl
     ])
     ++
-    (with pkgs-old; [
+    (with pkgs-unstable; [
     ]);
 
     # Set environment variables
