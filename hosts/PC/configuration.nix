@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, pkgs-unstable, ... }:
+{ config, inputs, pkgs-unstable, ... }:
 
 {
   imports =
@@ -11,7 +11,6 @@
     ];
 
   # Nix settings
-  nixpkgs.config.allowUnfree = true;
 
   nix = {
     gc = {
@@ -109,15 +108,15 @@
     isNormalUser = true;
     description = "Michael Grinschewski";
     extraGroups = [ "networkmanager" "wheel" "dialout" "lp"];
-    shell = pkgs.fish;
-    packages = (with pkgs; [
+    shell = pkgs-unstable.fish;
+    packages = (with pkgs-unstable; [
     ]);
   };
   # Allow unfree packages
 
 
   environment = {
-    systemPackages = (with pkgs; [
+    systemPackages = (with pkgs-unstable; [
       # general stuff
       vim
       wget
@@ -128,7 +127,6 @@
       lua
       gcc
       clang
-      spotify
       obsidian
       nerd-fonts.hack
       lshw
@@ -169,9 +167,6 @@
       fuzzel
       xwayland-satellite
       playerctl
-    ])
-    ++
-    (with pkgs-unstable; [
     ]);
 
     # Set environment variables
@@ -179,7 +174,7 @@
     };
 
     # Exclude unneeded plasma pkgs
-    plasma6.excludePackages = with pkgs; [
+    plasma6.excludePackages = with pkgs-unstable; [
       kdePackages.elisa # Simple music player aiming to provide a nice experience for its users
       kdePackages.kdepim-runtime # Akonadi agents and resources
       kdePackages.kmahjongg # KMahjongg is a tile matching game for one or two players
@@ -197,16 +192,17 @@
       remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
       dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
       localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
+      package = pkgs-unstable.steam;
     };
     niri = {
       enable = true;
-      package = pkgs.niri;
+      package = pkgs-unstable.niri;
     };
     firefox.enable = true;
     fish.enable = true;
     nix-ld = {
       enable = true;
-      libraries = with pkgs; [
+      libraries = with pkgs-unstable; [
       ];
     };
   };
