@@ -28,7 +28,7 @@
       name = "Michael Grinschewski";
     in {
       nixosConfigurations = {
-        P50 = lib.nixosSystem {
+        Edward = lib.nixosSystem {
           inherit system;
           specialArgs = {
             inherit inputs;
@@ -36,12 +36,12 @@
             inherit name;
           };
           modules = [
-          ./hosts/P50/configuration.nix
+          ./hosts/Kenway/configuration.nix
           nixos-hardware.nixosModules.lenovo-thinkpad-p50
           ./modules/quickshell.nix
           ];
         };
-        PC = lib.nixosSystem {
+        Ezio = lib.nixosSystem {
           inherit system;
           specialArgs = {
             inherit inputs;
@@ -51,7 +51,7 @@
             inherit nix-cachyos-kernel;
           };
           modules = [
-            ./hosts/PC/configuration.nix
+            ./hosts/Ezio/configuration.nix
             ./modules/quickshell.nix
             ./modules/cachyos-kernel.nix
           ];

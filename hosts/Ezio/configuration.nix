@@ -41,7 +41,7 @@
 
   # Networking
   networking = {
-    hostName = "MiGiPC"; # Define your hostname.
+    hostName = "Ezio"; # Define your hostname.
     networkmanager.enable = true;
   };
 

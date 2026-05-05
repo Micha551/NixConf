@@ -35,7 +35,7 @@
 
   # Networking
   networking = {
-    hostName = "P50"; # Define your hostname.
+    hostName = "Kenway"; # Define your hostname.
     networkmanager.enable = true;
     firewall = {
       enable = true;
