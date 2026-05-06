@@ -1,9 +1,9 @@
-{ pkgs, nix-cachyos-kernel, ... }:
+{ pkgs, nix-cachyos-kernel, lib, ... }:
 
 {
   nixpkgs.overlays = [
     nix-cachyos-kernel.overlays.default
   ];
 
-  boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest-zen4;
+  boot.kernelPackages = lib.mkForce pkgs.cachyosKernels.linuxPackages-cachyos-latest-zen4;
 }

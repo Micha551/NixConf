@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, inputs, pkgs-unstable, ... }:
+{ config, inputs, lib, pkgs, ... }:
 
 {
   imports =
@@ -24,6 +24,8 @@
     };
     settings.experimental-features = [ "nix-command" "flakes" ];
   };
+  # Allow unfree packages
+  nixpkgs.config.allowUnfree = true;
 
   # Bootloader
   boot.loader = {
@@ -108,15 +110,14 @@
     isNormalUser = true;
     description = "Michael Grinschewski";
     extraGroups = [ "networkmanager" "wheel" "dialout" "lp"];
-    shell = pkgs-unstable.fish;
-    packages = (with pkgs-unstable; [
+    shell = pkgs.fish;
+    packages = (with pkgs; [
     ]);
   };
-  # Allow unfree packages
 
 
   environment = {
-    systemPackages = (with pkgs-unstable; [
+    systemPackages = (with pkgs; [
       # general stuff
       vim
       wget
@@ -174,7 +175,7 @@
     };
 
     # Exclude unneeded plasma pkgs
-    plasma6.excludePackages = with pkgs-unstable; [
+    plasma6.excludePackages = with pkgs; [
       kdePackages.elisa # Simple music player aiming to provide a nice experience for its users
       kdePackages.kdepim-runtime # Akonadi agents and resources
       kdePackages.kmahjongg # KMahjongg is a tile matching game for one or two players
@@ -192,17 +193,17 @@
       remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
       dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
       localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
-      package = pkgs-unstable.steam;
+      package = pkgs.steam;
     };
     niri = {
       enable = true;
-      package = pkgs-unstable.niri;
+      package = pkgs.niri;
     };
     firefox.enable = true;
     fish.enable = true;
     nix-ld = {
       enable = true;
-      libraries = with pkgs-unstable; [
+      libraries = with pkgs; [
       ];
     };
   };

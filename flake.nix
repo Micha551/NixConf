@@ -47,7 +47,6 @@
             inherit inputs;
             inherit username;
             inherit name;
-            inherit pkgs-unstable;
             inherit nix-cachyos-kernel;
           };
           modules = [
