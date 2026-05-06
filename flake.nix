@@ -28,7 +28,7 @@
       name = "Michael Grinschewski";
     in {
       nixosConfigurations = {
-        Edward = lib.nixosSystem {
+        Kenway = lib.nixosSystem {
           inherit system;
           specialArgs = {
             inherit inputs;

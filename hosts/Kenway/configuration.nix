@@ -115,6 +115,15 @@
       ];
     };
 
+    syncthing = {
+      enable = true;
+      openDefaultPorts = true;
+    };
+  
+    spotifyd = {
+      enable = true;
+    };
+
     desktopManager.plasma6.enable = true;
     displayManager.sddm.enable = true;
     pulseaudio.enable = false;
@@ -122,7 +131,6 @@
     tailscale.enable = true;
     blueman.enable = true;
   };
-
   /*
   # Virtualization
   virtualisation.libvirtd.enable = true;
@@ -161,6 +169,7 @@
       gcc
       clang
       spotify
+      spotifyd
       obsidian
       nerd-fonts.hack
       lshw
