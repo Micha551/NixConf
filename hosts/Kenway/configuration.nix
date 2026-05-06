@@ -26,23 +26,27 @@
     settings.experimental-features = [ "nix-command" "flakes" ];
   };
 
-  # Bootloader
+  
+  # Bootloader.
   boot.loader = {
     systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
-    kernelParams = [ "video=HDMI-A-1:1920x1080@144.001" ];
   };
 
   # Networking
   networking = {
-    hostName = "MiGiPC"; # Define your hostname.
+    hostName = "Kenway"; # Define your hostname.
     networkmanager.enable = true;
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [ 25565 ];
+    };
   };
 
   # Timezone & Locale
   time.timeZone = "Europe/Berlin";
   i18n = {
-    defaultLocale = "en_US.UTF-8";
+    defaultLocale = "en_GB.UTF-8";
     extraLocaleSettings = {
       LC_ADDRESS = "de_DE.UTF-8";
       LC_IDENTIFICATION = "de_DE.UTF-8";
@@ -56,21 +60,20 @@
     };
   };
 
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
+  # Hardware settings
+  hardware = {
+    graphics.enable = true;
+    bluetooth = {
+      enable = true;
+    };
+    nvidia = {
+      open = false;
+      nvidiaSettings = true;
+      package = config.boot.kernelPackages.nvidiaPackages.stable;
+      prime.offload.enable = false;
+      prime.sync.enable = true;
+    };
   };
-
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "de";
-  };
-
-  # Configure console keymap
-  console.keyMap = "de";
 
   # Services
   services = {
@@ -79,6 +82,7 @@
         layout = "de";
       };
       enable = true;
+      videoDrivers = ["nvidia"];
     };
 
     pipewire = {
@@ -88,29 +92,71 @@
       pulse.enable = true;
     };
 
-    printing.enable = true;
+    udev.extraRules = ''
+
+    # 2.4GHz/Dongle
+    KERNEL=="hidraw*", ATTRS{idVendor}=="2dc8", MODE="0666"
+
+    # Bluetooth
+    KERNEL=="hidraw*", KERNELS=="*2DC8:*", MODE="0666"
+    '';
+
+    avahi = {
+      enable = true;
+      nssmdns4 = true;
+      openFirewall = true;
+    };
+
+    printing = {
+      enable = true;
+      drivers = with pkgs; [
+        cups-filters
+        cups-browsed
+      ];
+    };
+
+    syncthing = {
+      enable = true;
+      openDefaultPorts = true;
+    };
+  
+    spotifyd = {
+      enable = true;
+    };
+
+    desktopManager.plasma6.enable = true;
+    displayManager.sddm.enable = true;
     pulseaudio.enable = false;
     logind.settings.Login.HandleLidSwitchExternalPower = "ignore";
     tailscale.enable = true;
+    blueman.enable = true;
   };
+  /*
+  # Virtualization
+  virtualisation.libvirtd.enable = true;
+  programs.virt-manager.enable = true;
+  virtualisation.libvirtd.qemu.swtpm.enable = true;
+  */
 
   console.keyMap = "de";
-
-  security.rtkit.enable = true;
+  security = {
+    rtkit.enable = true;
+    sudo.package = pkgs.sudo.override { withInsults = true; };
+  };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.migio = {
     isNormalUser = true;
     description = "Michael Grinschewski";
-    extraGroups = [ "networkmanager" "wheel" "dialout"];
+    extraGroups = [ "networkmanager" "wheel" "dialout" "lp"];
     shell = pkgs.fish;
     packages = (with pkgs; [
     ]);
   };
-  # Allow unfree packages
 
 
   environment = {
+    # TODO: Sort by Use Case
     systemPackages = (with pkgs; [
       # general stuff
       vim
@@ -123,6 +169,7 @@
       gcc
       clang
       spotify
+      spotifyd
       obsidian
       nerd-fonts.hack
       lshw
@@ -135,35 +182,56 @@
       paraview
       wezterm
       discord
+      vesktop
       thunderbird
       moonlight-qt
       fish
+      vlc
+      octaveFull
+      libreoffice
+      signal-desktop
+      anki
+      ani-cli
+      blender
+      vscode
+
+      # TeX
+      texliveFull
+      latexrun
 
       # LSP
       clang-tools
       lua-language-server
       stylua
       nixd
+      ripgrep
 
-      # niri
+      # Niri
       niri
-      gnome-keyring
-      xdg-desktop-portal-gtk
-      xdg-desktop-portal-gnome
       fuzzel
       xwayland-satellite
-      libsForQt5.qt5ct
+      playerctl
     ])
     ++
     (with pkgs-unstable; [
     ]);
-    variables = {
-      QT_QPA_PLATFORMTHEME="qt5ct"; 
-    };
-  };
 
-  qt.enable = true;
-  qt.platformTheme = "qt5ct";
+    # Set environment variables
+    variables = {
+    };
+
+    # Exclude unneeded plasma pkgs
+    plasma6.excludePackages = with pkgs; [
+      kdePackages.elisa # Simple music player aiming to provide a nice experience for its users
+      kdePackages.kdepim-runtime # Akonadi agents and resources
+      kdePackages.kmahjongg # KMahjongg is a tile matching game for one or two players
+      kdePackages.kmines # KMines is the classic Minesweeper game
+      kdePackages.konversation # User-friendly and fully-featured IRC client
+      kdePackages.kpat # KPatience offers a selection of solitaire card games
+      kdePackages.ksudoku # KSudoku is a logic-based symbol placement puzzle
+      kdePackages.konsole
+    ];
+  };
 
   programs = {
     steam = {
@@ -184,5 +252,7 @@
       ];
     };
   };
-  system.stateVersion = "25.11"; # Did you read the comment?
+
+  system.stateVersion = "25.05"; # Did you read the comment?
 }
+

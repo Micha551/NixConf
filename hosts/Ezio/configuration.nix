@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, pkgs-unstable, ... }:
+{ config, inputs, pkgs-unstable, ... }:
 
 {
   imports =
@@ -11,7 +11,6 @@
     ];
 
   # Nix settings
-  nixpkgs.config.allowUnfree = true;
 
   nix = {
     gc = {
@@ -26,27 +25,30 @@
     settings.experimental-features = [ "nix-command" "flakes" ];
   };
 
-  
-  # Bootloader.
+  # Bootloader
   boot.loader = {
-    systemd-boot.enable = true;
-    efi.canTouchEfiVariables = true;
+    efi = {
+        canTouchEfiVariables = true;
+    };
+    grub = {
+        enable = true;
+        efiSupport = true;
+        #efiInstallAsRemovable = true;
+        device = "nodev";
+    };
   };
+  boot.kernelParams = [ "video=HDMI-A-1:1920x1080@144.001" ];
 
   # Networking
   networking = {
-    hostName = "P50"; # Define your hostname.
+    hostName = "Ezio"; # Define your hostname.
     networkmanager.enable = true;
-    firewall = {
-      enable = true;
-      allowedTCPPorts = [ 25565 ];
-    };
   };
 
   # Timezone & Locale
   time.timeZone = "Europe/Berlin";
   i18n = {
-    defaultLocale = "en_GB.UTF-8";
+    defaultLocale = "en_US.UTF-8";
     extraLocaleSettings = {
       LC_ADDRESS = "de_DE.UTF-8";
       LC_IDENTIFICATION = "de_DE.UTF-8";
@@ -60,19 +62,9 @@
     };
   };
 
-  # Hardware settings
-  hardware = {
-    graphics.enable = true;
-    bluetooth = {
-      enable = true;
-    };
-    nvidia = {
-      open = false;
-      nvidiaSettings = true;
-      package = config.boot.kernelPackages.nvidiaPackages.stable;
-      prime.offload.enable = false;
-      prime.sync.enable = true;
-    };
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
   };
 
   # Services
@@ -82,7 +74,6 @@
         layout = "de";
       };
       enable = true;
-      videoDrivers = ["nvidia"];
     };
 
     pipewire = {
@@ -101,63 +92,31 @@
     KERNEL=="hidraw*", KERNELS=="*2DC8:*", MODE="0666"
     '';
 
-    avahi = {
-      enable = true;
-      nssmdns4 = true;
-      openFirewall = true;
-    };
-
-    printing = {
-      enable = true;
-      drivers = with pkgs; [
-        cups-filters
-        cups-browsed
-      ];
-    };
-
-    syncthing = {
-      enable = true;
-      openDefaultPorts = true;
-    };
-  
-    spotifyd = {
-      enable = true;
-    };
-
     desktopManager.plasma6.enable = true;
     displayManager.sddm.enable = true;
+    printing.enable = true;
     pulseaudio.enable = false;
-    logind.settings.Login.HandleLidSwitchExternalPower = "ignore";
     tailscale.enable = true;
-    blueman.enable = true;
   };
-  /*
-  # Virtualization
-  virtualisation.libvirtd.enable = true;
-  programs.virt-manager.enable = true;
-  virtualisation.libvirtd.qemu.swtpm.enable = true;
-  */
 
   console.keyMap = "de";
-  security = {
-    rtkit.enable = true;
-    sudo.package = pkgs.sudo.override { withInsults = true; };
-  };
+
+  security.rtkit.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.migio = {
     isNormalUser = true;
     description = "Michael Grinschewski";
     extraGroups = [ "networkmanager" "wheel" "dialout" "lp"];
-    shell = pkgs.fish;
-    packages = (with pkgs; [
+    shell = pkgs-unstable.fish;
+    packages = (with pkgs-unstable; [
     ]);
   };
+  # Allow unfree packages
 
 
   environment = {
-    # TODO: Sort by Use Case
-    systemPackages = (with pkgs; [
+    systemPackages = (with pkgs-unstable; [
       # general stuff
       vim
       wget
@@ -168,8 +127,6 @@
       lua
       gcc
       clang
-      spotify
-      spotifyd
       obsidian
       nerd-fonts.hack
       lshw
@@ -181,7 +138,6 @@
       libgcc
       paraview
       wezterm
-      discord
       vesktop
       thunderbird
       moonlight-qt
@@ -191,9 +147,9 @@
       libreoffice
       signal-desktop
       anki
-      ani-cli
       blender
       vscode
+      rocmPackages.rocm-smi
 
       # TeX
       texliveFull
@@ -206,14 +162,11 @@
       nixd
       ripgrep
 
-      # Niri
+      # niri
       niri
       fuzzel
       xwayland-satellite
       playerctl
-    ])
-    ++
-    (with pkgs-unstable; [
     ]);
 
     # Set environment variables
@@ -221,7 +174,7 @@
     };
 
     # Exclude unneeded plasma pkgs
-    plasma6.excludePackages = with pkgs; [
+    plasma6.excludePackages = with pkgs-unstable; [
       kdePackages.elisa # Simple music player aiming to provide a nice experience for its users
       kdePackages.kdepim-runtime # Akonadi agents and resources
       kdePackages.kmahjongg # KMahjongg is a tile matching game for one or two players
@@ -239,20 +192,19 @@
       remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
       dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
       localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
+      package = pkgs-unstable.steam;
     };
     niri = {
       enable = true;
-      package = pkgs.niri;
+      package = pkgs-unstable.niri;
     };
     firefox.enable = true;
     fish.enable = true;
     nix-ld = {
       enable = true;
-      libraries = with pkgs; [
+      libraries = with pkgs-unstable; [
       ];
     };
   };
-
-  system.stateVersion = "25.05"; # Did you read the comment?
+  system.stateVersion = "25.11"; # Did you read the comment?
 }
-
