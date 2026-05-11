@@ -39,6 +39,7 @@
           ./hosts/Kenway/configuration.nix
           nixos-hardware.nixosModules.lenovo-thinkpad-p50
           ./modules/quickshell.nix
+          ./modules/syncthing.nix
           ];
         };
         Ezio = lib.nixosSystem {
@@ -53,6 +54,7 @@
             ./hosts/Ezio/configuration.nix
             ./modules/quickshell.nix
             ./modules/cachyos-kernel.nix
+            ./modules/syncthing.nix
           ];
         };
       };

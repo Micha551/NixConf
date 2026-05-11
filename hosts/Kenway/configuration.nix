@@ -114,11 +114,6 @@
         cups-browsed
       ];
     };
-
-    syncthing = {
-      enable = true;
-      openDefaultPorts = true;
-    };
   
     spotifyd = {
       enable = true;
