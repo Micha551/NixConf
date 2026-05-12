@@ -13,10 +13,24 @@
       url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    niri = {
+      url = "github:sodiboo/niri-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
   };
 
-  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, nixos-hardware, nix-cachyos-kernel, ... }:
+  outputs =
+    inputs@{
+      self,
+      nixpkgs,
+      nixpkgs-unstable,
+      nixos-hardware,
+      home-manager,
+      niri,
+      nix-cachyos-kernel,
+      ...
+    }:
     let
       system = "x86_64-linux";
       lib = nixpkgs.lib;
@@ -30,7 +44,8 @@
       };
       username = "migio";
       name = "Michael Grinschewski";
-    in {
+    in
+    {
       nixosConfigurations = {
         Kenway = lib.nixosSystem {
           inherit system;
@@ -40,18 +55,27 @@
             inherit name;
           };
           modules = [
-          ./hosts/Kenway/configuration.nix
-          ./modules/quickshell.nix
-          ./modules/syncthing.nix
-          ./modules/niri.nix
-          nixos-hardware.nixosModules.lenovo-thinkpad-p50
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-
-            home-manager.users.migio = import ./home.nix;
-          }
+            ./hosts/Kenway/configuration.nix
+            ./modules/defaultPackages.nix
+            ./modules/quickshell.nix
+            ./modules/syncthing.nix
+            nixos-hardware.nixosModules.lenovo-thinkpad-p50
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.extraSpecialArgs = { inherit inputs; };
+              home-manager.sharedModules = [
+                niri.homeModules.niri
+              ];
+              home-manager.users.migio = {
+                imports = [
+                  ./home.nix
+                  ./modules/niri.nix
+                  ./modules/emacs.nix
+                ];
+              };
+            }
           ];
         };
         Ezio = lib.nixosSystem {
@@ -64,17 +88,26 @@
           };
           modules = [
             ./hosts/Ezio/configuration.nix
+            ./modules/defaultPackages.nix
             ./modules/quickshell.nix
             ./modules/cachyos-kernel.nix
             ./modules/syncthing.nix
-            ./modules/niri.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-
-            home-manager.users.migio = import ./home.nix;
-          }
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.extraSpecialArgs = { inherit inputs; };
+              home-manager.sharedModules = [
+                niri.homeModules.niri
+              ];
+              home-manager.users.migio = {
+                imports = [
+                  ./home.nix
+                  ./modules/niri.nix
+                  ./modules/emacs.nix
+                ];
+              };
+            }
           ];
         };
       };

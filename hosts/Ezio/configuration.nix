@@ -118,56 +118,8 @@
 
   environment = {
     systemPackages = (with pkgs; [
-      # general stuff
-      vim
-      wget
-      neovim
-      git
-      fastfetch
-      btop
-      lua
-      gcc
-      clang
-      obsidian
-      nerd-fonts.hack
-      lshw
-      python3
-      unzip
-      pavucontrol
-      brightnessctl
-      ghostty
-      libgcc
-      paraview
-      wezterm
-      vesktop
-      thunderbird
-      moonlight-qt
-      fish
-      vlc
-      octaveFull
-      libreoffice
-      signal-desktop
-      anki
-      blender
-      vscode
+      # AMD
       rocmPackages.rocm-smi
-
-      # TeX
-      texliveFull
-      latexrun
-
-      # LSP
-      clang-tools
-      lua-language-server
-      stylua
-      nixd
-      ripgrep
-
-      # niri
-      niri
-      fuzzel
-      xwayland-satellite
-      playerctl
     ]);
 
     # Set environment variables
