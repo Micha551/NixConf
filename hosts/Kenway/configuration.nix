@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, pkgs-unstable, ... }:
+{ config, pkgs, ... }:
 
 {
   imports =
@@ -153,46 +153,12 @@
   environment = {
     # TODO: Sort by Use Case
     systemPackages = (with pkgs; [
-      # general stuff
+      # Editors
       vim
-      wget
       neovim
-      git
-      fastfetch
-      btop
       lua
-      gcc
-      clang
-      spotify
-      spotifyd
       obsidian
-      nerd-fonts.hack
-      lshw
-      python3
-      unzip
-      pavucontrol
-      brightnessctl
-      ghostty
-      libgcc
-      paraview
-      wezterm
-      discord
-      vesktop
-      thunderbird
-      moonlight-qt
-      fish
-      vlc
-      octaveFull
-      libreoffice
-      signal-desktop
-      anki
-      ani-cli
-      blender
       vscode
-
-      # TeX
-      texliveFull
-      latexrun
 
       # LSP
       clang-tools
@@ -201,14 +167,54 @@
       nixd
       ripgrep
 
+      # Coding
+      gcc
+      libgcc
+      clang
+      git
+      python3
+
+      # Work
+      paraview
+
+      # General Programs
+      spotify
+      spotifyd
+      discord
+      vesktop
+      thunderbird
+      moonlight-qt
+      octaveFull
+      libreoffice
+      signal-desktop
+      ani-cli
+      blender
+
+      # Uni
+      anki
+
+      # System Tools
+      fish
+      wget
+      wezterm
+      fastfetch
+      btop
+      unzip
+      pavucontrol
+      brightnessctl
+      lshw
+      nerd-fonts.hack
+      vlc
+
+      # TeX
+      texliveFull
+      latexrun
+
       # Niri
       niri
       fuzzel
       xwayland-satellite
       playerctl
-    ])
-    ++
-    (with pkgs-unstable; [
     ]);
 
     # Set environment variables
@@ -234,10 +240,6 @@
       remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
       dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
       localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
-    };
-    niri = {
-      enable = true;
-      package = pkgs.niri;
     };
     firefox.enable = true;
     fish.enable = true;
