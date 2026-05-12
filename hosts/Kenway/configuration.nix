@@ -153,68 +153,6 @@
   environment = {
     # TODO: Sort by Use Case
     systemPackages = (with pkgs; [
-      # Editors
-      vim
-      neovim
-      lua
-      obsidian
-      vscode
-
-      # LSP
-      clang-tools
-      lua-language-server
-      stylua
-      nixd
-      ripgrep
-
-      # Coding
-      gcc
-      libgcc
-      clang
-      git
-      python3
-
-      # Work
-      paraview
-
-      # General Programs
-      spotify
-      spotifyd
-      discord
-      vesktop
-      thunderbird
-      moonlight-qt
-      octaveFull
-      libreoffice
-      signal-desktop
-      ani-cli
-      blender
-
-      # Uni
-      anki
-
-      # System Tools
-      fish
-      wget
-      wezterm
-      fastfetch
-      btop
-      unzip
-      pavucontrol
-      brightnessctl
-      lshw
-      nerd-fonts.hack
-      vlc
-
-      # TeX
-      texliveFull
-      latexrun
-
-      # Niri
-      niri
-      fuzzel
-      xwayland-satellite
-      playerctl
     ]);
 
     # Set environment variables
