@@ -64,6 +64,7 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
+              home-manager.extraSpecialArgs = { inherit inputs; };
               home-manager.sharedModules = [
                 niri.homeModules.niri
               ];
@@ -71,9 +72,9 @@
                 imports = [
                   ./home.nix
                   ./modules/niri.nix
+                  ./modules/emacs.nix
                 ];
               };
-
             }
           ];
         };

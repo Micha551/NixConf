@@ -121,6 +121,7 @@
 
     desktopManager.plasma6.enable = true;
     displayManager.sddm.enable = true;
+    displayManager.sessionPackages = [pkgs.niri];
     pulseaudio.enable = false;
     logind.settings.Login.HandleLidSwitchExternalPower = "ignore";
     tailscale.enable = true;
@@ -151,7 +152,6 @@
 
 
   environment = {
-    # TODO: Sort by Use Case
     systemPackages = (with pkgs; [
     ]);
 

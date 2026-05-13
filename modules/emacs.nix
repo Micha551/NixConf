@@ -8,7 +8,6 @@
   extraPackages = epkgs: with epkgs; [
     nix-mode
     nixfmt
-    evil
     base16-theme
     magit
     git-gutter
@@ -40,9 +39,6 @@
     (use-package nixfmt)
     (use-package nix-mode
   :mode "\\.nix\\'")
-
-    (require 'evil)
-    (evil-mode 1)
   '';
   };
 
