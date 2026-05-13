@@ -120,7 +120,7 @@
     };
 
     desktopManager.plasma6.enable = true;
-    displayManager.gdm.enable = true;
+    displayManager.sddm.enable = true;
     displayManager.sessionPackages = [pkgs.niri];
     pulseaudio.enable = false;
     logind.settings.Login.HandleLidSwitchExternalPower = "ignore";
