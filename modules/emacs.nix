@@ -29,6 +29,10 @@
         (setq tab-width 2)
         (load-theme 'base16-vesper t)
 
+        (global-set-key (kbd "C-c l") #'org-store-link)
+        (global-set-key (kbd "C-c a") #'org-agenda)
+        (global-set-key (kbd "C-c c") #'org-capture)        
+        
         (use-package git-gutter
           :hook (prog-mode . git-gutter-mode)
           :config

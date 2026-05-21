@@ -96,6 +96,7 @@
 
     desktopManager.plasma6.enable = true;
     displayManager.sddm.enable = true;
+    displayManager.sessionPackages = [pkgs.niri];
     printing.enable = true;
     pulseaudio.enable = false;
     tailscale.enable = true;
