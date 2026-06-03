@@ -66,7 +66,6 @@
             "<C-d>" = "cmp.mapping.scroll_docs(-4)";
             "<C-e>" = "cmp.mapping.close()";
             "<C-f>" = "cmp.mapping.scroll_docs(4)";
-            "<CR>" = "cmp.mapping.confirm({ select = true })";
             "<S-Tab>" = "cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'})";
             "<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
           };
@@ -79,7 +78,6 @@
       nixd.enable = true;
       texlab.enable = true;
     };
-
 
     keymaps = [
       {
@@ -112,6 +110,12 @@
         options.silent = true;
         action = "<cmd>Telescope live_grep<CR>";
       }
+      {
+        mode = "n";
+        key = "<leader>gp";
+        options.silent = true;
+        action = "<cmd>Gitsigns preview_hunk_inline<CR>";
+      }
     ];
 
     autoCmd = [
@@ -121,7 +125,6 @@
       }
     ];
 
-    extraConfigLua = ''
-    '';
+    extraConfigLua = "";
   };
 }

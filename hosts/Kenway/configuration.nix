@@ -5,10 +5,10 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   # Nix settings
   nixpkgs.config.allowUnfree = true;
@@ -23,10 +23,12 @@
       automatic = true;
       dates = [ "weekly" ];
     };
-    settings.experimental-features = [ "nix-command" "flakes" ];
+    settings.experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
   };
 
-  
   # Bootloader.
   boot.loader = {
     systemd-boot.enable = true;
@@ -82,7 +84,7 @@
         layout = "de";
       };
       enable = true;
-      videoDrivers = ["nvidia"];
+      videoDrivers = [ "nvidia" ];
     };
 
     pipewire = {
@@ -94,11 +96,11 @@
 
     udev.extraRules = ''
 
-    # 2.4GHz/Dongle
-    KERNEL=="hidraw*", ATTRS{idVendor}=="2dc8", MODE="0666"
+      # 2.4GHz/Dongle
+      KERNEL=="hidraw*", ATTRS{idVendor}=="2dc8", MODE="0666"
 
-    # Bluetooth
-    KERNEL=="hidraw*", KERNELS=="*2DC8:*", MODE="0666"
+      # Bluetooth
+      KERNEL=="hidraw*", KERNELS=="*2DC8:*", MODE="0666"
     '';
 
     avahi = {
@@ -114,24 +116,24 @@
         cups-browsed
       ];
     };
-  
+
     spotifyd = {
       enable = true;
     };
 
     desktopManager.plasma6.enable = true;
     displayManager.sddm.enable = true;
-    displayManager.sessionPackages = [pkgs.niri];
+    displayManager.sessionPackages = [ pkgs.niri ];
     pulseaudio.enable = false;
     logind.settings.Login.HandleLidSwitchExternalPower = "ignore";
     tailscale.enable = true;
     blueman.enable = true;
   };
   /*
-  # Virtualization
-  virtualisation.libvirtd.enable = true;
-  programs.virt-manager.enable = true;
-  virtualisation.libvirtd.qemu.swtpm.enable = true;
+    # Virtualization
+    virtualisation.libvirtd.enable = true;
+    programs.virt-manager.enable = true;
+    virtualisation.libvirtd.qemu.swtpm.enable = true;
   */
 
   console.keyMap = "de";
@@ -144,16 +146,26 @@
   users.users.migio = {
     isNormalUser = true;
     description = "Michael Grinschewski";
-    extraGroups = [ "networkmanager" "wheel" "dialout" "lp"];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "dialout"
+      "lp"
+    ];
     shell = pkgs.fish;
-    packages = (with pkgs; [
-    ]);
+    packages = (
+      with pkgs;
+      [
+      ]
+    );
   };
 
-
   environment = {
-    systemPackages = (with pkgs; [
-    ]);
+    systemPackages = (
+      with pkgs;
+      [
+      ]
+    );
 
     # Set environment variables
     variables = {
@@ -186,8 +198,31 @@
       libraries = with pkgs; [
       ];
     };
+    niri.settings = {
+      outputs = {
+        "eDP-1" = {
+          scale = 2.0;
+          mode = {
+            height = 2160;
+            width = 3840;
+            refresh = 59.997;
+          };
+          position.x = 0;
+          position.y = 0;
+        };
+        "DP-6" = {
+          scale = 1.0;
+          mode = {
+            height = 1080;
+            width = 1920;
+            refresh = 144;
+          };
+          position.x = 1920;
+          position.y = 0;
+        };
+      };
+    };
   };
 
   system.stateVersion = "25.05"; # Did you read the comment?
 }
-
