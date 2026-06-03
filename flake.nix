@@ -71,13 +71,13 @@
               home-manager.extraSpecialArgs = { inherit inputs; };
               home-manager.sharedModules = [
                 niri.homeModules.niri
+                nixvim.homeModules.nixvim
               ];
               home-manager.users.migio = {
                 imports = [
                   ./home.nix
                   ./modules/niri.nix
-                  #./modules/emacs.nix
-		  ./modules/nixvim.nix
+		              ./modules/nixvim.nix
                 ];
               };
             }
@@ -110,7 +110,6 @@
                 imports = [
                   ./home.nix
                   ./modules/niri.nix
-                  #./modules/emacs.nix
                   ./modules/nixvim.nix
                 ];
               };
