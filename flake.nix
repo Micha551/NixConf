@@ -77,7 +77,8 @@
                 imports = [
                   ./home.nix
                   ./modules/niri.nix
-		              ./modules/nixvim.nix
+                  ./modules/nixvim.nix
+                  ./modules/niri-outputs.nix
                 ];
               };
             }
