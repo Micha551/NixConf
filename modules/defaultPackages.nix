@@ -1,10 +1,11 @@
-{config, pkgs, ...}:
+{ config, pkgs, ... }:
 
 {
-  environment.systemPackages = (with pkgs; [
+  environment.systemPackages = (
+    with pkgs;
+    [
       # Editors
       vim
-      neovim
       lua
       obsidian
       vscode
@@ -38,6 +39,7 @@
       signal-desktop
       ani-cli
       blender
+      zathura
 
       # System Tools
       fish
@@ -54,11 +56,11 @@
 
       # TeX
       texliveFull
-      latexrun
 
       # Niri
       fuzzel
       xwayland-satellite
       playerctl
-  ]);
+    ]
+  );
 }

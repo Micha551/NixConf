@@ -20,6 +20,7 @@
         corfu
         cape
         rg
+        pdf-tools
         nixpkgs-fmt
       ];
     extraConfig = ''
@@ -56,6 +57,7 @@
         (use-package nixfmt)
         (use-package nix-mode
       :mode "\\.nix\\'")
+        (pdf-tools-install)
     '';
   };
 

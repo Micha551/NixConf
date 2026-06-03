@@ -2,11 +2,11 @@
   description = "Nixos config flake";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     noctalia = {
@@ -16,6 +16,9 @@
     niri = {
       url = "github:sodiboo/niri-flake";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixvim = {
+      url = "github:nix-community/nixvim";
     };
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
   };
@@ -28,6 +31,7 @@
       nixos-hardware,
       home-manager,
       niri,
+      nixvim,
       nix-cachyos-kernel,
       ...
     }:
@@ -72,7 +76,8 @@
                 imports = [
                   ./home.nix
                   ./modules/niri.nix
-                  ./modules/emacs.nix
+                  #./modules/emacs.nix
+		  ./modules/nixvim.nix
                 ];
               };
             }
@@ -99,12 +104,14 @@
               home-manager.extraSpecialArgs = { inherit inputs; };
               home-manager.sharedModules = [
                 niri.homeModules.niri
+                nixvim.homeModules.nixvim
               ];
               home-manager.users.migio = {
                 imports = [
                   ./home.nix
                   ./modules/niri.nix
-                  ./modules/emacs.nix
+                  #./modules/emacs.nix
+                  ./modules/nixvim.nix
                 ];
               };
             }

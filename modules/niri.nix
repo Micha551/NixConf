@@ -14,7 +14,7 @@
       hotkey-overlay.skip-at-startup = true;
       binds = {
         "Mod+D".action.spawn = "fuzzel";
-        "Mod+Return".action.spawn = "emacs";
+        "Mod+Return".action.spawn = "wezterm";
 
         "XF86AudioRaiseVolume" = {
           action.spawn = [ "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+" ];
@@ -85,16 +85,16 @@
         "Mod+Down".action.focus-window-down = [];
         "Mod+Up".action.focus-window-up = [];
         "Mod+Right".action.focus-column-right = [];
-        "Mod+B".action.focus-column-left = [];
-        "Mod+F".action.focus-column-right = [];
+        "Mod+H".action.focus-column-left = [];
+        "Mod+L".action.focus-column-right = [];
         "Mod+Shift+Left".action.move-column-left = [];
         "Mod+Shift+Down".action.move-window-down = [];
         "Mod+Shift+Up".action.move-window-up = [];
         "Mod+Shift+Right".action.move-column-right = [];
-        "Mod+Shift+B".action.move-column-left = [];
-        "Mod+Shift+N".action.move-window-down-or-to-workspace-down = [];
-        "Mod+Shift+P".action.move-window-up-or-to-workspace-up = [];
-        "Mod+Shift+F".action.move-column-right = [];
+        "Mod+Shift+H".action.move-column-left = [];
+        "Mod+Shift+J".action.move-window-down-or-to-workspace-down = [];
+        "Mod+Shift+K".action.move-window-up-or-to-workspace-up = [];
+        "Mod+Shift+L".action.move-column-right = [];
         "Mod+Home".action.focus-column-first = [];
         "Mod+End".action.focus-column-last = [];
         "Mod+Ctrl+Home".action.move-column-to-first = [];
@@ -103,22 +103,22 @@
         "Mod+Ctrl+Down".action.focus-monitor-down = [];
         "Mod+Ctrl+Up".action.focus-monitor-up = [];
         "Mod+Ctrl+Right".action.focus-monitor-right = [];
-        "Mod+Ctrl+B".action.focus-monitor-left = [];
-        "Mod+Ctrl+N".action.focus-monitor-down = [];
-        "Mod+Ctrl+P".action.focus-monitor-up = [];
-        "Mod+Ctrl+F".action.focus-monitor-right = [];
+        "Mod+Ctrl+H".action.focus-monitor-left = [];
+        "Mod+Ctrl+J".action.focus-monitor-down = [];
+        "Mod+Ctrl+K".action.focus-monitor-up = [];
+        "Mod+Ctrl+L".action.focus-monitor-right = [];
         "Mod+Shift+Ctrl+Left".action.move-column-to-monitor-left = [];
         "Mod+Shift+Ctrl+Down".action.move-column-to-monitor-down = [];
         "Mod+Shift+Ctrl+Up".action.move-column-to-monitor-up = [];
         "Mod+Shift+Ctrl+Right".action.move-column-to-monitor-right = [];
-        "Mod+Shift+Ctrl+B".action.move-column-to-monitor-left = [];
-        "Mod+Shift+Ctrl+N".action.move-column-to-monitor-down = [];
-        "Mod+Shift+Ctrl+P".action.move-column-to-monitor-up = [];
-        "Mod+Shift+Ctrl+F".action.move-column-to-monitor-right = [];
+        "Mod+Shift+Ctrl+H".action.move-column-to-monitor-left = [];
+        "Mod+Shift+Ctrl+J".action.move-column-to-monitor-down = [];
+        "Mod+Shift+Ctrl+K".action.move-column-to-monitor-up = [];
+        "Mod+Shift+Ctrl+L".action.move-column-to-monitor-right = [];
         "Mod+Page_Down".action.focus-workspace-down = [];
         "Mod+Page_Up".action.focus-workspace-up = [];
-        "Mod+N".action.focus-workspace-down = [];
-        "Mod+P".action.focus-workspace-up = [];
+        "Mod+U".action.focus-workspace-down = [];
+        "Mod+I".action.focus-workspace-up = [];
         "Mod+Ctrl+Page_Down".action.move-column-to-workspace-down = [];
         "Mod+Ctrl+Page_Up".action.move-column-to-workspace-up = [];
         "Mod+Shift+U".action.move-column-to-workspace-down = [];
@@ -142,8 +142,8 @@
         "Mod+R".action.switch-preset-column-width = [];
         "Mod+Shift+R".action.switch-preset-window-height = [];
         "Mod+Ctrl+R".action.reset-window-height = [];
-        "Mod+F11".action.maximize-column = [];
-        "Mod+Shift+F11".action.fullscreen-window = [];
+        "Mod+F".action.maximize-column = [];
+        "Mod+Shift+F".action.fullscreen-window = [];
         "Mod+C".action.center-column = [];
         "Mod+V".action.toggle-window-floating = [];
         "Mod+Shift+V".action.switch-focus-between-floating-and-tiling = [];
@@ -153,7 +153,9 @@
         "Alt+Print".action.screenshot-window = [];
         "Mod+Shift+M".action.quit = [];
         "Ctrl+Alt+Delete".action.quit = [];
-        "Mod+Shift+K".action.power-off-monitors = [];
+        "Mod+Shift+F11".action.power-off-monitors = [];
+        "Mod+Plus".action.set-column-width = ["+10%"];
+        "Mod+Minus".action.set-column-width = ["-10%"];
       };
 
       spawn-at-startup = [
@@ -163,7 +165,7 @@
       input = {
         keyboard.xkb = {
           layout = "de";
-          options = "caps:ctrl_modifier";
+          options = "caps:escape";
         };
       };
 
