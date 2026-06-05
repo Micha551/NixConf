@@ -1,9 +1,4 @@
-{
-  config,
-  inputs,
-  pkgs,
-  ...
-}:
+{ ... }:
 
 {
   programs.nixvim = {
@@ -78,6 +73,7 @@
       clangd.enable = true;
       nixd.enable = true;
       texlab.enable = true;
+      pylsp.enable = true;
     };
 
     keymaps = [

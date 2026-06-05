@@ -2,13 +2,13 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, inputs, lib, pkgs, ... }:
+{ pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   # Nix settings
 
@@ -22,7 +22,10 @@
       automatic = true;
       dates = [ "weekly" ];
     };
-    settings.experimental-features = [ "nix-command" "flakes" ];
+    settings.experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
   };
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -30,13 +33,13 @@
   # Bootloader
   boot.loader = {
     efi = {
-        canTouchEfiVariables = true;
+      canTouchEfiVariables = true;
     };
     grub = {
-        enable = true;
-        efiSupport = true;
-        #efiInstallAsRemovable = true;
-        device = "nodev";
+      enable = true;
+      efiSupport = true;
+      #efiInstallAsRemovable = true;
+      device = "nodev";
     };
   };
   boot.kernelParams = [ "video=HDMI-A-1:1920x1080@144.001" ];
@@ -86,17 +89,16 @@
     };
 
     udev.extraRules = ''
+      # 2.4GHz/Dongle
+      KERNEL=="hidraw*", ATTRS{idVendor}=="2dc8", MODE="0666"
 
-    # 2.4GHz/Dongle
-    KERNEL=="hidraw*", ATTRS{idVendor}=="2dc8", MODE="0666"
-
-    # Bluetooth
-    KERNEL=="hidraw*", KERNELS=="*2DC8:*", MODE="0666"
+      # Bluetooth
+      KERNEL=="hidraw*", KERNELS=="*2DC8:*", MODE="0666"
     '';
 
     desktopManager.plasma6.enable = true;
     displayManager.sddm.enable = true;
-    displayManager.sessionPackages = [pkgs.niri];
+    displayManager.sessionPackages = [ pkgs.niri ];
     printing.enable = true;
     pulseaudio.enable = false;
     tailscale.enable = true;
@@ -110,18 +112,28 @@
   users.users.migio = {
     isNormalUser = true;
     description = "Michael Grinschewski";
-    extraGroups = [ "networkmanager" "wheel" "dialout" "lp"];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "dialout"
+      "lp"
+    ];
     shell = pkgs.fish;
-    packages = (with pkgs; [
-    ]);
+    packages = (
+      with pkgs;
+      [
+      ]
+    );
   };
 
-
   environment = {
-    systemPackages = (with pkgs; [
-      # AMD
-      rocmPackages.rocm-smi
-    ]);
+    systemPackages = (
+      with pkgs;
+      [
+        # AMD
+        rocmPackages.rocm-smi
+      ]
+    );
 
     # Set environment variables
     variables = {

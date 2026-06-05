@@ -1,4 +1,9 @@
-{ pkgs, nix-cachyos-kernel, lib, ... }:
+{
+  pkgs,
+  nix-cachyos-kernel,
+  lib,
+  ...
+}:
 
 {
   nixpkgs.overlays = [

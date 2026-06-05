@@ -63,6 +63,7 @@
             ./modules/defaultPackages.nix
             ./modules/quickshell.nix
             ./modules/syncthing.nix
+            ./modules/python.nix
             nixos-hardware.nixosModules.lenovo-thinkpad-p50
             home-manager.nixosModules.home-manager
             {
@@ -78,7 +79,7 @@
                   ./home.nix
                   ./modules/niri.nix
                   ./modules/nixvim.nix
-                  ./modules/niri-outputs.nix
+                  ./hosts/Kenway/niri-outputs.nix
                 ];
               };
             }
@@ -98,6 +99,7 @@
             ./modules/quickshell.nix
             ./modules/cachyos-kernel.nix
             ./modules/syncthing.nix
+            ./modules/python.nix
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
@@ -112,6 +114,7 @@
                   ./home.nix
                   ./modules/niri.nix
                   ./modules/nixvim.nix
+                  ./hosts/Ezio/niri-outputs.nix
                 ];
               };
             }
