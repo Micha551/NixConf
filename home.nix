@@ -19,8 +19,6 @@
     imports = [
       ./modules/niri.nix
       ./modules/nixvim.nix
-      #./modules/noctalia.nix
-      ./hosts/Kenway/niri-outputs.nix
     ];
   };
 }

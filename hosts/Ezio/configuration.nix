@@ -5,6 +5,10 @@
 { pkgs, ... }:
 
 {
+  home-manager.users.migio.imports = [
+    ./niri-outputs.nix
+  ];
+
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
