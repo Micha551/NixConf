@@ -96,6 +96,10 @@
       KERNEL=="hidraw*", KERNELS=="*2DC8:*", MODE="0666"
     '';
 
+    spotifyd = {
+      enable = true;
+    };
+
     desktopManager.plasma6.enable = true;
     displayManager.sddm.enable = true;
     displayManager.sessionPackages = [ pkgs.niri ];

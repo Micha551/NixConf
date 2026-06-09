@@ -25,6 +25,7 @@
       lsp-config.enable = true;
       lsp.enable = true;
       lsp-format.enable = true;
+      render-markdown.enable = true;
 
       vimtex = {
         enable = true;
@@ -74,6 +75,7 @@
       nixd.enable = true;
       texlab.enable = true;
       pylsp.enable = true;
+      markdown_oxide.enable = true;
     };
 
     keymaps = [

@@ -57,32 +57,18 @@
             inherit inputs;
             inherit username;
             inherit name;
+            inherit niri;
+            inherit nixvim;
           };
           modules = [
             ./hosts/Kenway/configuration.nix
+            ./home.nix
             ./modules/defaultPackages.nix
             ./modules/quickshell.nix
             ./modules/syncthing.nix
             ./modules/python.nix
             nixos-hardware.nixosModules.lenovo-thinkpad-p50
             home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.extraSpecialArgs = { inherit inputs; };
-              home-manager.sharedModules = [
-                niri.homeModules.niri
-                nixvim.homeModules.nixvim
-              ];
-              home-manager.users.migio = {
-                imports = [
-                  ./home.nix
-                  ./modules/niri.nix
-                  ./modules/nixvim.nix
-                  ./hosts/Kenway/niri-outputs.nix
-                ];
-              };
-            }
           ];
         };
         Ezio = lib.nixosSystem {
@@ -92,32 +78,17 @@
             inherit username;
             inherit name;
             inherit nix-cachyos-kernel;
+            inherit niri;
+            inherit nixvim;
           };
           modules = [
             ./hosts/Ezio/configuration.nix
+            ./home.nix
             ./modules/defaultPackages.nix
-            ./modules/quickshell.nix
             ./modules/cachyos-kernel.nix
             ./modules/syncthing.nix
             ./modules/python.nix
             home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.extraSpecialArgs = { inherit inputs; };
-              home-manager.sharedModules = [
-                niri.homeModules.niri
-                nixvim.homeModules.nixvim
-              ];
-              home-manager.users.migio = {
-                imports = [
-                  ./home.nix
-                  ./modules/niri.nix
-                  ./modules/nixvim.nix
-                  ./hosts/Ezio/niri-outputs.nix
-                ];
-              };
-            }
           ];
         };
       };
