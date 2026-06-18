@@ -80,8 +80,8 @@
       open = false;
       nvidiaSettings = true;
       package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
-      prime.offload.enable = false;
-      prime.sync.enable = true;
+      prime.offload.enable = true;
+      prime.sync.enable = false;
     };
   };
 
@@ -172,6 +172,7 @@
     systemPackages = (
       with pkgs;
       [
+        cacert
       ]
     );
 

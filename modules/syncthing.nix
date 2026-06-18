@@ -42,12 +42,21 @@
           ];
         };
         "DnD" = {
-          id = "ratgj-v7k3r";
-          path = "/home/migio/Documents/DnD";
+          id = "2rusa-g6bxk";
+          path = "/home/migio/Documents/Personal/DnD";
           devices = [
             "Boox"
             "Phone"
           ];
+        };
+        "Ebooks" = {
+          id = "gwn2a-pdapp";
+          path = "/home/migio/Books";
+          devices = [
+            "Boox"
+            "Phone"
+          ];
+
         };
       };
     };
