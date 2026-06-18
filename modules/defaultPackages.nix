@@ -53,6 +53,7 @@
       lshw
       nerd-fonts.hack
       vlc
+      openvpn
 
       # TeX
       texliveFull

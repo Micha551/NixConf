@@ -86,6 +86,7 @@
             ./home.nix
             ./modules/defaultPackages.nix
             ./modules/cachyos-kernel.nix
+            ./modules/quickshell.nix
             ./modules/syncthing.nix
             ./modules/python.nix
             home-manager.nixosModules.home-manager
