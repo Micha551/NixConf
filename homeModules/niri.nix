@@ -136,6 +136,8 @@
         "Mod+Ctrl+I".action.move-workspace-up = [ ];
         "Mod+WheelScrollRight".action.focus-column-right = [ ];
         "Mod+WheelScrollLeft".action.focus-column-left = [ ];
+        "Mod+WheelScrollDown".action.focus-workspace-down = [ ];
+        "Mod+WheelScrollUp".action.focus-workspace-up = [ ];
         "Mod+Ctrl+WheelScrollRight".action.move-column-right = [ ];
         "Mod+Ctrl+WheelScrollLeft".action.move-column-left = [ ];
         "Mod+Shift+WheelScrollDown".action.focus-column-right = [ ];
