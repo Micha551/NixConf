@@ -24,8 +24,18 @@
       gitsigns.enable = true;
       lsp-config.enable = true;
       lsp.enable = true;
-      lsp-format.enable = true;
       render-markdown.enable = true;
+
+      lsp-format = {
+        enable = true;
+        settings = {
+          go = {
+            exclude = [
+              "cpp"
+            ];
+          };
+        };
+      };
 
       vimtex = {
         enable = true;

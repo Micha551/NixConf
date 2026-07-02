@@ -17,8 +17,8 @@
     home.homeDirectory = "/home/migio";
     home.stateVersion = "25.11";
     imports = [
-      ./modules/niri.nix
-      ./modules/nixvim.nix
+      ./homeModules/niri.nix
+      ./homeModules/nixvim.nix
     ];
   };
 }
