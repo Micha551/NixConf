@@ -55,17 +55,26 @@
         };
 
         "XF86AudioNext" = {
-          action.spawn = [ "playerctl next" ];
+          action.spawn = [
+            "playerctl"
+            "next"
+          ];
           allow-when-locked = true;
         };
 
         "XF86AudioPlay" = {
-          action.spawn = [ "playerctl play-pause" ];
+          action.spawn = [
+            "playerctl"
+            "play-pause"
+          ];
           allow-when-locked = true;
         };
 
         "XF86AudioPrev" = {
-          action.spawn = [ "playerctl previous" ];
+          action.spawn = [
+            "playerctl"
+            "previous"
+          ];
           allow-when-locked = true;
         };
 

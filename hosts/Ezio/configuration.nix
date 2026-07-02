@@ -140,6 +140,7 @@
       [
         # AMD
         rocmPackages.rocm-smi
+        nvtopPackages.amd
       ]
     );
 
