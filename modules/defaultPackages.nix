@@ -9,6 +9,7 @@
       lua
       obsidian
       vscode
+      vscodium
 
       # LSP
       clang-tools
@@ -54,6 +55,8 @@
       nerd-fonts.hack
       vlc
       openvpn
+      tmux
+      kdePackages.kdeconnect-kde
 
       # TeX
       texliveFull

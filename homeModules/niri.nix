@@ -14,23 +14,59 @@
         "Mod+D".action.spawn = "fuzzel";
         "Mod+Return".action.spawn = "wezterm";
 
+        "Mod+Escape".action.spawn = [
+          "noctalia-shell"
+          "ipc"
+          "call"
+          "lockScreen"
+          "lock"
+        ];
+
+        "Mod+Shift+D".action.spawn = [
+          "noctalia-shell"
+          "ipc"
+          "call"
+          "launcher"
+          "toggle"
+        ];
+
         "XF86AudioRaiseVolume" = {
-          action.spawn = [ "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+" ];
+          action.spawn = [
+            "wpctl"
+            "set-volume"
+            "@DEFAULT_AUDIO_SINK@"
+            "0.1+"
+          ];
           allow-when-locked = true;
         };
 
         "XF86AudioLowerVolume" = {
-          action.spawn = [ "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-" ];
+          action.spawn = [
+            "wpctl"
+            "set-volume"
+            "@DEFAULT_AUDIO_SINK@"
+            "0.1-"
+          ];
           allow-when-locked = true;
         };
 
         "XF86AudioMute" = {
-          action.spawn = [ "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle" ];
+          action.spawn = [
+            "wpctl"
+            "set-mute"
+            "@DEFAULT_AUDIO_SINK@"
+            "toggle"
+          ];
           allow-when-locked = true;
         };
 
         "XF86AudioMicMute" = {
-          action.spawn = [ "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle" ];
+          action.spawn = [
+            "wpctl"
+            "set-mute"
+            "@DEFAULT_AUDIO_SOURCE@"
+            "toggle"
+          ];
           allow-when-locked = true;
         };
 
