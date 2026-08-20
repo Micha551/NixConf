@@ -66,7 +66,6 @@
             ./modules/defaultPackages.nix
             ./modules/quickshell.nix
             ./modules/syncthing.nix
-            ./modules/python.nix
             nixos-hardware.nixosModules.lenovo-thinkpad-p50
             home-manager.nixosModules.home-manager
           ];
@@ -88,7 +87,6 @@
             ./modules/cachyos-kernel.nix
             ./modules/quickshell.nix
             ./modules/syncthing.nix
-            ./modules/python.nix
             home-manager.nixosModules.home-manager
           ];
         };
