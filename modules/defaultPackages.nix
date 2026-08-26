@@ -9,7 +9,6 @@
       lua
       obsidian
       vscode
-      vscodium
 
       # LSP
       clang-tools

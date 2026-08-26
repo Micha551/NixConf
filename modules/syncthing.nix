@@ -10,7 +10,7 @@
     settings = {
       devices = {
         "Phone" = {
-          id = "ENBLEMM-MHFC7YB-NGFKAMH-2U7H5FA-4IZORHC-VHNCGAE-X34E6KC-OS5XAA2";
+          id = "AEICHLF-4FRVRZY-LR42QVZ-SPSVJ3S-EWR5SQA-PRGDZ3E-4EUVORV-V76VTQE";
         };
         "Boox" = {
           id = "NMRMMZZ-YISK5VC-X3MFSEV-OAKWY5Z-QEUOH7C-E4Q3ZA5-5WYJ4SD-KGH2GA2";
@@ -30,6 +30,7 @@
           path = "/home/migio/Documents/Boox Notes";
           devices = [
             "Boox"
+            "Phone"
           ];
         };
         "Obsidian" = {
@@ -53,6 +54,7 @@
           path = "/home/migio/Books";
           devices = [
             "Boox"
+            "Phone"
           ];
 
         };
