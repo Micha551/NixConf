@@ -55,6 +55,7 @@
       vlc
       openvpn
       tmux
+      toybox
       kdePackages.kdeconnect-kde
 
       # TeX
