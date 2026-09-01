@@ -14,21 +14,23 @@
         "Mod+D".action.spawn = "fuzzel";
         "Mod+Return".action.spawn = "wezterm";
 
-        "Mod+Escape".action.spawn = [
-          "noctalia-shell"
-          "ipc"
-          "call"
-          "lockScreen"
-          "lock"
-        ];
+        /*
+                "Mod+Escape".action.spawn = [
+                  "noctalia-shell"
+                  "ipc"
+                  "call"
+                  "lockScreen"
+                  "lock"
+                ];
 
-        "Mod+Shift+D".action.spawn = [
-          "noctalia-shell"
-          "ipc"
-          "call"
-          "launcher"
-          "toggle"
-        ];
+                "Mod+Shift+D".action.spawn = [
+                  "noctalia-shell"
+                  "ipc"
+                  "call"
+                  "launcher"
+                  "toggle"
+                ];
+        */
 
         "XF86AudioRaiseVolume" = {
           action.spawn = [
@@ -202,10 +204,11 @@
         "Mod+Plus".action.set-column-width = [ "+10%" ];
         "Mod+Minus".action.set-column-width = [ "-10%" ];
       };
-
-      spawn-at-startup = [
-        { argv = [ "noctalia-shell" ]; }
-      ];
+      /*
+            spawn-at-startup = [
+              { argv = [ "noctalia-shell" ]; }
+            ];
+      */
 
       input = {
         keyboard.xkb = {

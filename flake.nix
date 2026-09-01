@@ -21,6 +21,10 @@
       url = "github:nix-community/nixvim";
     };
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
+    dms = {
+      url = "github:AvengeMedia/DankMaterialShell/stable";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -33,6 +37,7 @@
       niri,
       nixvim,
       nix-cachyos-kernel,
+      dms,
       ...
     }:
     let
@@ -59,6 +64,7 @@
             inherit name;
             inherit niri;
             inherit nixvim;
+            inherit dms;
           };
           modules = [
             ./hosts/Kenway/configuration.nix
@@ -79,6 +85,7 @@
             inherit nix-cachyos-kernel;
             inherit niri;
             inherit nixvim;
+            inherit dms;
           };
           modules = [
             ./hosts/Ezio/configuration.nix

@@ -2,6 +2,7 @@
   inputs,
   niri,
   nixvim,
+  dms,
   ...
 }:
 {
@@ -11,6 +12,8 @@
   home-manager.sharedModules = [
     niri.homeModules.niri
     nixvim.homeModules.nixvim
+    dms.homeModules.dank-material-shell
+    dms.homeModules.niri
   ];
   home-manager.users.migio = {
     home.username = "migio";
@@ -19,6 +22,7 @@
     imports = [
       ./homeModules/niri.nix
       ./homeModules/nixvim.nix
+      ./homeModules/dms.nix
     ];
   };
 }
