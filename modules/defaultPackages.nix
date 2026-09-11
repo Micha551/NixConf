@@ -30,7 +30,6 @@
 
       # General Programs
       spotify
-      spotifyd
       vesktop
       thunderbird
       moonlight-qt
