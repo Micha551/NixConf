@@ -30,7 +30,6 @@
           path = "/home/migio/Documents/Boox Notes";
           devices = [
             "Boox"
-            "Phone"
           ];
         };
         "Obsidian" = {
