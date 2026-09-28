@@ -42,7 +42,7 @@
         };
         "DnD" = {
           id = "2rusa-g6bxk";
-          path = "/home/migio/Documents/Personal/DnD";
+          path = "/home/migio/Documents/DnD";
           devices = [
             "Boox"
             "Phone"
