@@ -24,6 +24,7 @@
       clang
       git
       python3
+      quarto
 
       # Work
       paraview
@@ -39,6 +40,9 @@
       ani-cli
       blender
       zathura
+      tt
+      ttyper
+      gtypist
 
       # System Tools
       fish
