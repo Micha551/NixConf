@@ -60,6 +60,7 @@
       tmux
       toybox
       kdePackages.kdeconnect-kde
+      xdg-desktop-portal-gnome
 
       # TeX
       texliveFull
