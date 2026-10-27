@@ -94,6 +94,7 @@
             ./modules/cachyos-kernel.nix
             ./modules/quickshell.nix
             ./modules/syncthing.nix
+            ./modules/ssh.nix
             home-manager.nixosModules.home-manager
           ];
         };

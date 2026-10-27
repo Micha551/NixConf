@@ -129,6 +129,25 @@
       enable = true;
     };
 
+    syncthing = {
+      settings = {
+        devices = {
+          "Ezio" = {
+            id = "2D6KTDO-4WV5V7G-TW2OPZZ-EXQ75X6-5BY4UKX-MXPZBVU-BZTBBVI-7OA4WAN";
+          };
+        };
+        folders = {
+          "DnD" = {
+            id = "2rusa-g6bxk";
+            path = "/home/migio/Documents/DnD";
+            devices = [
+              "Ezio"
+            ];
+          };
+        };
+      };
+    };
+
     desktopManager.plasma6.enable = true;
     displayManager.sddm.enable = true;
     displayManager.sessionPackages = [ pkgs.niri ];
