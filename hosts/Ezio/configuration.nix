@@ -15,7 +15,6 @@
   ];
 
   # Nix settings
-
   nix = {
     gc = {
       automatic = true;
@@ -102,6 +101,25 @@
 
     spotifyd = {
       enable = true;
+    };
+
+    syncthing = {
+      settings = {
+        devices = {
+          "Kenway" = {
+            id = "X4C7XGX-W6VIDQB-4TM2FSJ-UEZQFLE-UPJBG5D-ODNISUF-SO4N4XC-XRKTPQ2";
+          };
+        };
+        folders = {
+          "DnD" = {
+            id = "2rusa-g6bxk";
+            path = "/home/migio/Documents/DnD";
+            devices = [
+              "Kenway"
+            ];
+          };
+        };
+      };
     };
 
     desktopManager.plasma6.enable = true;
